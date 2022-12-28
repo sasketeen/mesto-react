@@ -1,7 +1,12 @@
 /**
  *
- * @param {*} props
- * @returns
+ * @param {object} props - пропсы
+ * - name - значение модификатора формы
+ * - title - заголовок формы
+ * - isOpen - флаг открытия попапа
+ * - onClose - функция обработчик клика по крестику
+ * - onOverlayClick - функция обработчик клика по оверлею
+ * - children - внутренняя разметка формы
  */
 
 export default function PopupWithForm(props) {

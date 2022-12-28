@@ -1,3 +1,10 @@
+/**
+ *
+ * @param {object} props - пропсы:
+ * - card - объект карточки, на которую кликнули
+ * - onClose - функция обработчик клика по крестику
+ * - onOverlayClick - функция обработчик клика по оверлею
+ */
 export default function ImagePopup(props) {
   const { card, onClose, onOverlayClick } = props;
   return (

@@ -1,3 +1,6 @@
+/**
+ * @exports объект конфига API, содержащий адрес сервера, токен
+ */
 export const apiConfig = {
   serverLink: "https://mesto.nomoreparties.co/v1/cohort-54",
   headers: {

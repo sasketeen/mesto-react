@@ -1,7 +1,3 @@
-/**
- * @exports экземпляр класса API
- */
-
 import { apiConfig } from "./apiConfig";
 
 /**
@@ -133,4 +129,7 @@ class Api {
   }
 }
 
+/**
+ * @exports экземпляр класса API
+ */
 export default new Api(apiConfig);

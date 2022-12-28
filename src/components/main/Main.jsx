@@ -2,14 +2,24 @@ import { useEffect, useState } from "react";
 import Api from "../../utils/Api";
 import Card from "../Card/Card";
 
+/**
+ *
+ * @param {object} props - пропсы:
+ * - onEditProfile - функция обработчик клика по кнопке редактирования профиля
+ * - onAddPlace - функция обработчик клика по кнопке добавления карточки
+ * - onEditAvatar - функция обработчик клика по кнопке редактирования аватара
+ * - onClickImage - функция обработчик клика по фото
+ */
 export default function Main(props) {
   const { onEditProfile, onAddPlace, onEditAvatar, onClickImage } = props;
 
+  //стейт
   const [userName, setUserName] = useState();
   const [userDescription, setUserDescription] = useState();
   const [userAvatar, setUserAvatar] = useState();
   const [cards, setCard] = useState([]);
 
+  //инициализация начальных данных при монтировании компонента
   useEffect(() => {
     Promise.all([Api.getUserInfo(), Api.getCards()])
       .then(([userData, cardsData]) => {

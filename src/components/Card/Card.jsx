@@ -1,3 +1,9 @@
+/**
+ *
+ * @param {object} props - пропсы:
+ * - card - объект экземпляра карточки
+ * - onClickImage - функция обработчик клика по фото
+ */
 export default function (props) {
   const { card, onClickImage } = props;
 
