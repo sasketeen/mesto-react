@@ -10,7 +10,7 @@
  */
 
 export default function PopupWithForm(props) {
-  const {name, title, isOpen, onClose, onOverlayClick, children} = props;
+  const { name, title, isOpen, onClose, onOverlayClick, children } = props;
   return (
     <div
       className={`popup popup_type_${name} ${isOpen && "popup_opened"}`}

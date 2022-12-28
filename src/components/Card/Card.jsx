@@ -9,7 +9,7 @@ export default function (props) {
 
   const handleImageClick = () => {
     onClickImage(card);
-  }
+  };
   return (
     <li className="card">
       <button
