@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Footer from "./Footer/Footer";
 import Header from "./Header/header";
 import ImagePopup from "./ImagePopup/ImagePopup";
@@ -5,13 +6,56 @@ import Main from "./Main/Main";
 import PopupWithForm from "./PopupWithForm/PopupWithForm";
 
 function App() {
+  const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
+  const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
+  const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
+
+  const handleEditProfileClick = () => {
+    setIsEditProfilePopupOpen(true);
+    document.addEventListener("keydown", handleEscPress);
+  };
+
+  const handleAddPlaceClick = () => {
+    setIsAddPlacePopupOpen(true);
+    document.addEventListener("keydown", handleEscPress);
+  };
+
+  const handleEditAvatarClick = () => {
+    setIsEditAvatarPopupOpen(true);
+    document.addEventListener("keydown", handleEscPress);
+  };
+
+  const closeAllPopups = () => {
+    setIsEditProfilePopupOpen(false);
+    setIsAddPlacePopupOpen(false);
+    setIsEditAvatarPopupOpen(false);
+  }
+
+  const handleOverlayClick = ({target, currentTarget}) => {
+    if (target === currentTarget) closeAllPopups();
+  }
+
+  const handleEscPress = ({key}) => {
+    if (key === "Escape") closeAllPopups();
+  }
+
   return (
     <div className="page">
       <Header />
-      <Main />
+      <Main
+        onEditProfile={handleEditProfileClick}
+        onAddPlace={handleAddPlaceClick}
+        onEditAvatar={handleEditAvatarClick}
+      />
       <Footer />
 
-      <PopupWithForm name="editAvatar" title="Обновить аватар">
+      <PopupWithForm
+        name="editAvatar"
+        title="Обновить аватар"
+        onClose={closeAllPopups}
+        onOverlayClick={handleOverlayClick}
+        isOpen={isEditAvatarPopupOpen}
+      >
         <input
           type="url"
           className="popup__input"
@@ -46,14 +90,20 @@ function App() {
           </form>
         </div>
       </div> */}
-      <PopupWithForm name="editProfile" title="Редактировать профиль">
+      <PopupWithForm
+        name="editProfile"
+        title="Редактировать профиль"
+        onClose={closeAllPopups}
+        onOverlayClick={handleOverlayClick}
+        isOpen={isEditProfilePopupOpen}
+      >
         <input
           type="text"
           className="popup__input"
           id="usernameInput"
           name="username"
-          minlength="2"
-          maxlength="40"
+          minLength="2"
+          maxLength="40"
           required
         />
         <span className="popup__error usernameInput-error"></span>
@@ -62,8 +112,8 @@ function App() {
           className="popup__input"
           id="descriptionInput"
           name="description"
-          minlength="2"
-          maxlength="200"
+          minLength="2"
+          maxLength="200"
           required
         />
         <span className="popup__error descriptionInput-error"></span>
@@ -107,15 +157,21 @@ function App() {
           </form>
         </div>
       </div> */}
-      <PopupWithForm name="addCard" title="Новое место">
+      <PopupWithForm
+        name="addCard"
+        title="Новое место"
+        onClose={closeAllPopups}
+        onOverlayClick={handleOverlayClick}
+        isOpen={isAddPlacePopupOpen}
+      >
         <input
           type="text"
           className="popup__input"
           id="nameInput"
           name="name"
           placeholder="Название"
-          minlength="2"
-          maxlength="30"
+          minLength="2"
+          maxLength="30"
           required
         />
         <span className="popup__error nameInput-error"></span>
@@ -165,7 +221,7 @@ function App() {
         </div>
       </div> */}
 
-      <PopupWithForm name="confirm" title="Вы уверены?"></PopupWithForm>
+      {/* <PopupWithForm name="confirm" title="Вы уверены?" isOpen></PopupWithForm> */}
       {/* <div className="popup popup_type_confirm">
         <div className="popup__container">
           <h2 className="popup__title">Вы уверены?</h2>

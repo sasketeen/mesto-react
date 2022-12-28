@@ -1,24 +1,5 @@
-export default function Main() {
-  const handleEditAvatarClick = () => {
-    const popup = document.querySelector(".popup_type_editAvatar");
-    popup.classList.add("popup_opened");
-    // document.addEventListener("keydown", this._handleEscClose);
-    document.querySelector(".page").classList.add("page_type_openedPopup");
-  };
-
-  const handleEditProfileClick = () => {
-    const popup = document.querySelector(".popup_type_editProfile");
-    popup.classList.add("popup_opened");
-    // document.addEventListener("keydown", this._handleEscClose);
-    document.querySelector(".page").classList.add("page_type_openedPopup");
-  };
-
-  const handleAddPlaceClick = () => {
-    const popup = document.querySelector(".popup_type_addCard");
-    popup.classList.add("popup_opened");
-    // document.addEventListener("keydown", this._handleEscClose);
-    document.querySelector(".page").classList.add("page_type_openedPopup");
-  };
+export default function Main(props) {
+  const {onEditProfile, onAddPlace, onEditAvatar} = props;
 
   return (
     <main className="content">
@@ -34,7 +15,7 @@ export default function Main() {
               type="button"
               className="button profile__avatarButton"
               aria-label="Редактировать аватар"
-              onClick={handleEditAvatarClick}
+              onClick={onEditAvatar}
             ></button>
           </div>
           <div className="profile__info">
@@ -43,7 +24,7 @@ export default function Main() {
               className="button profile__editButton"
               type="button"
               aria-label="Редактировать профиль"
-              onClick={handleEditProfileClick}
+              onClick={onEditProfile}
             ></button>
             <p className="profile__description"></p>
           </div>
@@ -52,7 +33,7 @@ export default function Main() {
           className="button profile__addButton"
           type="button"
           aria-label="Добавить фото"
-          onClick={handleAddPlaceClick}
+          onClick={onAddPlace}
         ></button>
       </section>
 
