@@ -70,7 +70,13 @@ export default function Main(props) {
       <section className="elements">
         <ul className="elements__list">
           {cards.map((card) => {
-            return <Card card={card} key={card._id} onClickImage={onClickImage}></Card>;
+            return (
+              <Card
+                card={card}
+                key={card._id}
+                onClickImage={onClickImage}
+              ></Card>
+            );
           })}
         </ul>
       </section>
