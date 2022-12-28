@@ -2,7 +2,7 @@
  * @exports экземпляр класса API
  */
 
-import apiConfig from "./apiConfig";
+import { apiConfig } from "./ApiConfig";
 
 /**
  * Класс выполнения и обработки запросов на сервер

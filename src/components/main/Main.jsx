@@ -1,5 +1,24 @@
+import { useEffect, useState } from "react";
+import Api from "../../utils/Api";
+
 export default function Main(props) {
-  const {onEditProfile, onAddPlace, onEditAvatar} = props;
+  const { onEditProfile, onAddPlace, onEditAvatar } = props;
+
+  const [userName, setUserName] = useState();
+  const [userDescription, setUserDescription] = useState();
+  const [userAvatar, setUserAvatar] = useState();
+  const [cards, setCard] = useState([]);
+
+  useEffect(() => {
+    Promise.all([Api.getUserInfo(), Api.getCards()])
+      .then(([userData, cardsData]) => {
+        setUserName(userData.name);
+        setUserDescription(userData.about);
+        setUserAvatar(userData.avatar);
+        setCard(cardsData);
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   return (
     <main className="content">
@@ -7,7 +26,7 @@ export default function Main(props) {
         <div className="profile__card">
           <div className="profile__avatarContainer">
             <img
-              src="#"
+              src={userAvatar}
               alt="Аватар пользователя"
               className="profile__avatar"
             />
@@ -19,14 +38,14 @@ export default function Main(props) {
             ></button>
           </div>
           <div className="profile__info">
-            <h1 className="profile__name"></h1>
+            <h1 className="profile__name">{userName}</h1>
             <button
               className="button profile__editButton"
               type="button"
               aria-label="Редактировать профиль"
               onClick={onEditProfile}
             ></button>
-            <p className="profile__description"></p>
+            <p className="profile__description">{userDescription}</p>
           </div>
         </div>
         <button
