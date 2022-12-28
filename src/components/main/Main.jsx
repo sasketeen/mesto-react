@@ -3,7 +3,7 @@ import Api from "../../utils/Api";
 import Card from "../Card/Card";
 
 export default function Main(props) {
-  const { onEditProfile, onAddPlace, onEditAvatar } = props;
+  const { onEditProfile, onAddPlace, onEditAvatar, onClickImage } = props;
 
   const [userName, setUserName] = useState();
   const [userDescription, setUserDescription] = useState();
@@ -60,7 +60,7 @@ export default function Main(props) {
       <section className="elements">
         <ul className="elements__list">
           {cards.map((card) => {
-            return <Card card={card} key={card._id}></Card>;
+            return <Card card={card} key={card._id} onClickImage={onClickImage}></Card>;
           })}
         </ul>
       </section>

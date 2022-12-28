@@ -1,5 +1,9 @@
 export default function (props) {
-  const { card } = props;
+  const { card, onClickImage } = props;
+
+  const handleImageClick = () => {
+    onClickImage(card);
+  }
   return (
     <li className="card">
       <button
@@ -7,7 +11,12 @@ export default function (props) {
         type="button"
         name="delete"
       ></button>
-      <img src={card.link} alt={card.name} className="card__image" />
+      <img
+        src={card.link}
+        alt={card.name}
+        className="card__image"
+        onClick={handleImageClick}
+      />
       <div className="card__description">
         <h2 className="card__subtitle">{card.name}</h2>
         <div className="card__likeContainer">

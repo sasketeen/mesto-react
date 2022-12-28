@@ -6,35 +6,40 @@ import Main from "./Main/Main";
 import PopupWithForm from "./PopupWithForm/PopupWithForm";
 
 function App() {
+  //стейты
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
+  const [selectedCard, setSelectedCard] = useState({});
 
+  //обработчики кликов
   const handleEditProfileClick = () => {
     setIsEditProfilePopupOpen(true);
     document.addEventListener("keydown", handleEscPress);
   };
-
   const handleAddPlaceClick = () => {
     setIsAddPlacePopupOpen(true);
     document.addEventListener("keydown", handleEscPress);
   };
-
   const handleEditAvatarClick = () => {
     setIsEditAvatarPopupOpen(true);
     document.addEventListener("keydown", handleEscPress);
   };
+  const handleCardClick = (card) => {
+    setSelectedCard(card);
+  }
 
+  //обработчики закрытия попапов
   const closeAllPopups = () => {
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
+    setSelectedCard({});
+    document.removeEventListener("keydown", handleEscPress);
   }
-
   const handleOverlayClick = ({target, currentTarget}) => {
     if (target === currentTarget) closeAllPopups();
   }
-
   const handleEscPress = ({key}) => {
     if (key === "Escape") closeAllPopups();
   }
@@ -46,6 +51,7 @@ function App() {
         onEditProfile={handleEditProfileClick}
         onAddPlace={handleAddPlaceClick}
         onEditAvatar={handleEditAvatarClick}
+        onClickImage={handleCardClick}
       />
       <Footer />
 
@@ -237,7 +243,7 @@ function App() {
           </form>
         </div>
       </div> */}
-      <ImagePopup></ImagePopup>
+      <ImagePopup card={selectedCard} onClose={closeAllPopups} onOverlayClick={handleOverlayClick}></ImagePopup>
       {/* <div className="popup popup_type_image">
         <div className="popup__image-container">
           <button
@@ -252,29 +258,6 @@ function App() {
           </figure>
         </div>
       </div> */}
-
-      <template className="cardCopy">
-        <li className="card">
-          <button
-            className="button card__buttonDelete"
-            type="button"
-            name="delete"
-          ></button>
-          <img src="#" alt="" className="card__image" />
-          <div className="card__description">
-            <h2 className="card__subtitle"></h2>
-            <div className="card__likeContainer">
-              <button
-                className="button card__likeButton"
-                type="button"
-                name="like"
-                aria-label="Like"
-              ></button>
-              <span className="card__likeCounter"></span>
-            </div>
-          </div>
-        </li>
-      </template>
     </div>
   );
 }
