@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Api from "../../utils/Api";
+import Card from "../Card/Card";
 
 export default function Main(props) {
   const { onEditProfile, onAddPlace, onEditAvatar } = props;
@@ -57,7 +58,11 @@ export default function Main(props) {
       </section>
 
       <section className="elements">
-        <ul className="elements__list"></ul>
+        <ul className="elements__list">
+          {cards.map((card) => {
+            return <Card card={card} key={card._id}></Card>;
+          })}
+        </ul>
       </section>
     </main>
   );
