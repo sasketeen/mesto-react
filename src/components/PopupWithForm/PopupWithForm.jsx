@@ -9,8 +9,14 @@
  * - children - внутренняя разметка формы
  */
 
-export default function PopupWithForm(props) {
-  const { name, title, isOpen, onClose, onOverlayClick, children } = props;
+export default function PopupWithForm({
+  name,
+  title,
+  isOpen,
+  onClose,
+  onOverlayClick,
+  children,
+}) {
   return (
     <div
       className={`popup popup_type_${name} ${isOpen && "popup_opened"}`}

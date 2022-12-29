@@ -10,8 +10,7 @@ import Card from "../Card/Card";
  * - onEditAvatar - функция обработчик клика по кнопке редактирования аватара
  * - onClickImage - функция обработчик клика по фото
  */
-export default function Main(props) {
-  const { onEditProfile, onAddPlace, onEditAvatar, onClickImage } = props;
+export default function Main({ onEditProfile, onAddPlace, onEditAvatar, onClickImage }) {
 
   //стейт
   const [userName, setUserName] = useState("");

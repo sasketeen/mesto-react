@@ -5,8 +5,7 @@
  * - onClose - функция обработчик клика по крестику
  * - onOverlayClick - функция обработчик клика по оверлею
  */
-export default function ImagePopup(props) {
-  const { card, onClose, onOverlayClick } = props;
+export default function ImagePopup({ card, onClose, onOverlayClick }) {
   return (
     <div
       className={`popup popup_type_image ${card.name && "popup_opened"}`}
