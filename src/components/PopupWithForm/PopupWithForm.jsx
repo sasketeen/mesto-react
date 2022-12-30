@@ -3,14 +3,22 @@
  * @param {object} props - пропсы
  * - name - значение модификатора формы
  * - title - заголовок формы
+ * - buttonText - текст кнопки
  * - isOpen - флаг открытия попапа
  * - onClose - функция обработчик клика по крестику
  * - onOverlayClick - функция обработчик клика по оверлею
  * - children - внутренняя разметка формы
  */
 
-export default function PopupWithForm(props) {
-  const { name, title, isOpen, onClose, onOverlayClick, children } = props;
+export default function PopupWithForm({
+  name,
+  title,
+  buttonText,
+  isOpen,
+  onClose,
+  onOverlayClick,
+  children,
+}) {
   return (
     <div
       className={`popup popup_type_${name} ${isOpen && "popup_opened"}`}
@@ -32,7 +40,7 @@ export default function PopupWithForm(props) {
         >
           {children}
           <button type="submit" className="button popup__saveButton">
-            Сохранить
+            {buttonText}
           </button>
         </form>
       </div>

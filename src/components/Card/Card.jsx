@@ -4,8 +4,7 @@
  * - card - объект экземпляра карточки
  * - onClickImage - функция обработчик клика по фото
  */
-export default function (props) {
-  const { card, onClickImage } = props;
+export default function ({ card, onClickImage }) {
 
   const handleImageClick = () => {
     onClickImage(card);

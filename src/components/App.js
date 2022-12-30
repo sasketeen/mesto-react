@@ -18,27 +18,28 @@ function App() {
    */
   const handleEditProfileClick = () => {
     setIsEditProfilePopupOpen(true);
-    document.addEventListener("keydown", handleEscPress);
+    addListeners();
   };
   /**
    * функция обработчик клика по кнопке добавления карточки
    */
   const handleAddPlaceClick = () => {
     setIsAddPlacePopupOpen(true);
-    document.addEventListener("keydown", handleEscPress);
+    addListeners();
   };
   /**
    * функция обработчик клика по кнопке редактирования аватара
    */
   const handleEditAvatarClick = () => {
     setIsEditAvatarPopupOpen(true);
-    document.addEventListener("keydown", handleEscPress);
+    addListeners();
   };
   /**
    * функция обработчик клика по фото
    */
   const handleCardClick = (card) => {
     setSelectedCard(card);
+    addListeners();
   };
 
   //обработчики закрытия попапов
@@ -50,7 +51,7 @@ function App() {
     setIsAddPlacePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
     setSelectedCard({});
-    document.removeEventListener("keydown", handleEscPress);
+    removeListeners();
   };
   /**
    * функция обработчик клика по оверлею
@@ -64,6 +65,12 @@ function App() {
   const handleEscPress = ({ key }) => {
     if (key === "Escape") closeAllPopups();
   };
+  const addListeners = () => {
+    document.addEventListener("keydown", handleEscPress);
+  }
+  const removeListeners = () => {
+    document.removeEventListener("keydown", handleEscPress);
+  }
 
   return (
     <div className="page">
@@ -79,6 +86,7 @@ function App() {
       <PopupWithForm
         name="editAvatar"
         title="Обновить аватар"
+        buttonText="Сохранить"
         onClose={closeAllPopups}
         onOverlayClick={handleOverlayClick}
         isOpen={isEditAvatarPopupOpen}
@@ -97,6 +105,7 @@ function App() {
       <PopupWithForm
         name="editProfile"
         title="Редактировать профиль"
+        buttonText="Сохранить"
         onClose={closeAllPopups}
         onOverlayClick={handleOverlayClick}
         isOpen={isEditProfilePopupOpen}
@@ -126,6 +135,7 @@ function App() {
       <PopupWithForm
         name="addCard"
         title="Новое место"
+        buttonText="Создать"
         onClose={closeAllPopups}
         onOverlayClick={handleOverlayClick}
         isOpen={isAddPlacePopupOpen}
