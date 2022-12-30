@@ -3,6 +3,7 @@
  * @param {object} props - пропсы
  * - name - значение модификатора формы
  * - title - заголовок формы
+ * - buttonText - текст кнопки
  * - isOpen - флаг открытия попапа
  * - onClose - функция обработчик клика по крестику
  * - onOverlayClick - функция обработчик клика по оверлею
@@ -12,6 +13,7 @@
 export default function PopupWithForm({
   name,
   title,
+  buttonText,
   isOpen,
   onClose,
   onOverlayClick,
@@ -38,7 +40,7 @@ export default function PopupWithForm({
         >
           {children}
           <button type="submit" className="button popup__saveButton">
-            Сохранить
+            {buttonText}
           </button>
         </form>
       </div>

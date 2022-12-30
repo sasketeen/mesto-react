@@ -79,6 +79,7 @@ function App() {
       <PopupWithForm
         name="editAvatar"
         title="Обновить аватар"
+        buttonText="Сохранить"
         onClose={closeAllPopups}
         onOverlayClick={handleOverlayClick}
         isOpen={isEditAvatarPopupOpen}
@@ -97,6 +98,7 @@ function App() {
       <PopupWithForm
         name="editProfile"
         title="Редактировать профиль"
+        buttonText="Сохранить"
         onClose={closeAllPopups}
         onOverlayClick={handleOverlayClick}
         isOpen={isEditProfilePopupOpen}
@@ -126,6 +128,7 @@ function App() {
       <PopupWithForm
         name="addCard"
         title="Новое место"
+        buttonText="Создать"
         onClose={closeAllPopups}
         onOverlayClick={handleOverlayClick}
         isOpen={isAddPlacePopupOpen}
