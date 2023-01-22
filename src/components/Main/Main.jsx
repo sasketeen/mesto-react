@@ -1,4 +1,7 @@
+import { useContext } from "react";
 import { useEffect, useState } from "react";
+import { CardsContext } from "../../contexts/CardsContext";
+import {CurrentUserContext} from "../../contexts/CurrentUserContext";
 import Api from "../../utils/Api";
 import Card from "../Card/Card";
 
@@ -10,25 +13,11 @@ import Card from "../Card/Card";
  * - onEditAvatar - функция обработчик клика по кнопке редактирования аватара
  * - onClickImage - функция обработчик клика по фото
  */
-export default function Main({ onEditProfile, onAddPlace, onEditAvatar, onClickImage }) {
+  export default function Main({ onEditProfile, onAddPlace, onEditAvatar, onClickImage }) {
 
   //стейт
-  const [userName, setUserName] = useState("");
-  const [userDescription, setUserDescription] = useState("");
-  const [userAvatar, setUserAvatar] = useState("");
-  const [cards, setCard] = useState([]);
-
-  //инициализация начальных данных при монтировании компонента
-  useEffect(() => {
-    Promise.all([Api.getUserInfo(), Api.getCards()])
-      .then(([userData, cardsData]) => {
-        setUserName(userData.name);
-        setUserDescription(userData.about);
-        setUserAvatar(userData.avatar);
-        setCard(cardsData);
-      })
-      .catch((err) => console.log(err));
-  }, []);
+  const currentUser = useContext(CurrentUserContext);
+  const cards = useContext(CardsContext);
 
   return (
     <main className="content">
@@ -36,7 +25,7 @@ export default function Main({ onEditProfile, onAddPlace, onEditAvatar, onClickI
         <div className="profile__card">
           <div className="profile__avatarContainer">
             <img
-              src={userAvatar}
+              src={currentUser.avatar}
               alt="Аватар пользователя"
               className="profile__avatar"
             />
@@ -48,14 +37,14 @@ export default function Main({ onEditProfile, onAddPlace, onEditAvatar, onClickI
             ></button>
           </div>
           <div className="profile__info">
-            <h1 className="profile__name">{userName}</h1>
+            <h1 className="profile__name">{currentUser.name}</h1>
             <button
               className="button profile__editButton"
               type="button"
               aria-label="Редактировать профиль"
               onClick={onEditProfile}
             ></button>
-            <p className="profile__description">{userDescription}</p>
+            <p className="profile__description">{currentUser.description}</p>
           </div>
         </div>
         <button

@@ -1,21 +1,29 @@
+import { useContext } from "react";
+import { CurrentUserContext } from "../../contexts/CurrentUserContext";
+
 /**
  *
  * @param {object} props - пропсы:
  * - card - объект экземпляра карточки
  * - onClickImage - функция обработчик клика по фото
  */
-export default function ({ card, onClickImage }) {
+export default function ({ card, onClickImage}) {
+  const currentUser = useContext(CurrentUserContext);
+  const isOwn = card.owner._id === currentUser._id;
+  const isLiked = card.likes.some((user) => user._id === currentUser._id);
 
   const handleImageClick = () => {
     onClickImage(card);
   };
   return (
     <li className="card">
-      <button
-        className="button card__buttonDelete"
-        type="button"
-        name="delete"
-      ></button>
+      {isOwn && (
+        <button
+          className="button card__buttonDelete"
+          type="button"
+          name="delete"
+        />
+      )}
       <img
         src={card.link}
         alt={card.name}
@@ -26,7 +34,9 @@ export default function ({ card, onClickImage }) {
         <h2 className="card__subtitle">{card.name}</h2>
         <div className="card__likeContainer">
           <button
-            className="button card__likeButton"
+            className={`button card__likeButton ${
+              isLiked && "card__likeButton_active"
+            }`}
             type="button"
             name="like"
             aria-label="Like"
