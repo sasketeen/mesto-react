@@ -2,6 +2,15 @@ import { useEffect, useContext, useState } from "react";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import PopupWithForm from "../PopupWithForm/PopupWithForm";
 
+/**
+ *
+ * @param {object} props - пропсы:
+ * - onUpdateUser - функция обновления данных пользователя
+ * - onClose - функция обработчик клика по крестику
+ * - onOverlayClick - функция обработчик клика по оверлею
+ * - isOpen - флаг открытия попапа
+ * - isLoading - флаг процесса отправки данных
+ */
 export default function({onUpdateUser, ...props}) {
   const currentUser = useContext(CurrentUserContext);
   const [name, setName] = useState("");

@@ -10,6 +10,7 @@ import PopupWithForm from "./PopupWithForm/PopupWithForm";
 import defaultAvatar from "../images/Anonymous_emblem.svg";
 import { CardsContext } from "../contexts/CardsContext";
 import EditProfilePopup from "./EditProfilePopup/EditProfilePopup";
+import EditAvatarPopup from "./EditAvatarPopup/EditAvatarPopup";
 
 function App() {
   //стейты
@@ -35,7 +36,14 @@ function App() {
       .catch((err) => console.log(err));
   }, []);
 
-  //обработчики кликов
+  /**
+   *  функция обновления данных пользователя после запроса
+   * @param {object} userData - объект пользователя
+   */
+  const updateUserInfo = (userData) => {
+    setCurrentUser(userData);
+    closeAllPopups();
+  }
 
   /**
    * функция обработчик клика по кнопке редактирования профиля
@@ -45,12 +53,15 @@ function App() {
     addListeners();
   };
 
+  /**
+   * функция обработки сабмита формы обновления информации пользователя
+   * @param {object} newUserData - объект с новым именем и описание пользователя
+   */
   const handleUpdateUser = (newUserData) => {
     setIsLoading(true);
     Api.editUserInfo(newUserData)
       .then((userData) => {
-        setCurrentUser(userData);
-        closeAllPopups();
+        updateUserInfo(userData);
       })
       .catch((err) => console.log(err))
       .finally(() => setIsLoading(false));
@@ -71,6 +82,20 @@ function App() {
     setIsEditAvatarPopupOpen(true);
     addListeners();
   };
+
+  /**
+   * функция обработки сабмита формы обновления аватара
+   * @param {object} newAvatarData - объект с новой ссылкой на аватар
+   */
+  const handleUpdateAvatar = (newAvatarData) => {
+    setIsLoading(true)
+    Api.editAvatar(newAvatarData)
+      .then((userData) => {
+        updateUserInfo(userData);
+      })
+      .catch((err) => console.log(err))
+      .finally(() => setIsLoading(false));
+  }
 
   /**
    * функция обработчик клика по фото
@@ -157,24 +182,13 @@ function App() {
           />
           <Footer />
 
-          <PopupWithForm
-            name="editAvatar"
-            title="Обновить аватар"
-            buttonText="Сохранить"
+          <EditAvatarPopup
             onClose={closeAllPopups}
             onOverlayClick={handleOverlayClick}
+            onUpdateAvatar={handleUpdateAvatar}
             isOpen={isEditAvatarPopupOpen}
-          >
-            <input
-              type="url"
-              className="popup__input"
-              id="avatarInput"
-              name="avatar"
-              placeholder="Ссылка на аватар"
-              required
-            />
-            <span className="popup__error avatarInput-error"></span>
-          </PopupWithForm>
+            isLoading={isLoading}
+          ></EditAvatarPopup>
 
           <EditProfilePopup
             onClose={closeAllPopups}
