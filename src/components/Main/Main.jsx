@@ -13,6 +13,7 @@ import Card from "../Card/Card";
  * - onEditAvatar - функция обработчик клика по кнопке редактирования аватара
  * - onClickImage - функция обработчик клика по фото
  * - onClickLike - функция обработчик клика по лайку
+ * - onClickDelete - функция обработчик удаления карточки
  */
   export default function Main({
     onEditProfile,
@@ -20,6 +21,7 @@ import Card from "../Card/Card";
     onEditAvatar,
     onClickImage,
     onClickLike,
+    onClickDelete,
   }) {
     //стейт
     const currentUser = useContext(CurrentUserContext);
@@ -70,6 +72,7 @@ import Card from "../Card/Card";
                   key={card._id}
                   onClickImage={onClickImage}
                   onClickLike={onClickLike}
+                  onClickDelete={onClickDelete}
                 ></Card>
               );
             })}

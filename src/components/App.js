@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import {CurrentUserContext} from "../contexts/CurrentUserContext";
+import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import Api from "../utils/Api";
 import Footer from "./Footer/Footer";
 import Header from "./Header/header";
@@ -63,7 +63,7 @@ function App() {
    * функция обработчик клика по фото
    * @param {object} card - объект выбранной карточки
    */
-  const handleCardClick = (card) => {
+  const handleClickImage = (card) => {
     setSelectedCard(card);
     addListeners();
   };
@@ -72,7 +72,7 @@ function App() {
    * функция обработчик лайка карточки
    * @param {object} card - объект лайкнутой карточки
    */
-  const handleCardLike = (targetCard) => {
+  const handleLikeCard = (targetCard) => {
     const isLiked = targetCard.likes.some(
       (user) => user._id === currentUser._id
     );
@@ -81,6 +81,12 @@ function App() {
       setCards((cards) =>
         cards.map((card) => (card._id === targetCard._id ? newCard : card))
       );
+    });
+  };
+
+  const handleDeleteCard = (targetCard) => {
+    Api.deleteCard(targetCard._id).then(() => {
+      setCards((cards) => cards.filter((card) => card._id !== targetCard._id));
     });
   };
 
@@ -126,8 +132,9 @@ function App() {
             onEditProfile={handleEditProfileClick}
             onAddPlace={handleAddPlaceClick}
             onEditAvatar={handleEditAvatarClick}
-            onClickImage={handleCardClick}
-            onClickLike={handleCardLike}
+            onClickImage={handleClickImage}
+            onClickLike={handleLikeCard}
+            onClickDelete={handleDeleteCard}
           />
           <Footer />
 

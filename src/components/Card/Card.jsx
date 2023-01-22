@@ -6,9 +6,10 @@ import { CurrentUserContext } from "../../contexts/CurrentUserContext";
  * @param {object} props - пропсы:
  * - card - объект экземпляра карточки
  * - onClickImage - функция обработчик клика по фото
- * - onClickLike - функция обработчик лайка
+ * - onClickLike - функция обработчик лайка карточки
+ * - onClickDelete - функция обработчик удаления карточки
  */
-export default function ({ card, onClickImage, onClickLike}) {
+export default function ({ card, onClickImage, onClickLike, onClickDelete}) {
   const currentUser = useContext(CurrentUserContext);
   const isOwn = card.owner._id === currentUser._id;
   const isLiked = card.likes.some((user) => user._id === currentUser._id);
@@ -27,6 +28,13 @@ export default function ({ card, onClickImage, onClickLike}) {
     onClickLike(card);
   };
 
+  /**
+   * колбек при клике на удаление
+   */
+  const handleDeleteCard = () => {
+    onClickDelete(card);
+  };
+
   return (
     <li className="card">
       {isOwn && (
@@ -34,6 +42,7 @@ export default function ({ card, onClickImage, onClickLike}) {
           className="button card__buttonDelete"
           type="button"
           name="delete"
+          onClick={handleDeleteCard}
         />
       )}
       <img
