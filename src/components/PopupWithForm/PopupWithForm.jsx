@@ -5,8 +5,10 @@
  * - title - заголовок формы
  * - buttonText - текст кнопки
  * - isOpen - флаг открытия попапа
+ * - isLoading - флаг процесса отправки данных
  * - onClose - функция обработчик клика по крестику
  * - onOverlayClick - функция обработчик клика по оверлею
+ * - onSubmit - функция обработчик сабмита
  * - children - внутренняя разметка формы
  */
 
@@ -15,14 +17,16 @@ export default function PopupWithForm({
   title,
   buttonText,
   isOpen,
+  isLoading,
   onClose,
   onOverlayClick,
+  onSubmit,
   children,
 }) {
   return (
     <div
       className={`popup popup_type_${name} ${isOpen && "popup_opened"}`}
-      onClick={onOverlayClick}
+      onMouseDown={onOverlayClick}
     >
       <div className="popup__container">
         <h2 className="popup__title">{title}</h2>
@@ -37,9 +41,15 @@ export default function PopupWithForm({
           className="popup__form"
           name={`${name}-form`}
           noValidate
+          onSubmit={onSubmit}
         >
           {children}
-          <button type="submit" className="button popup__saveButton">
+          <button
+            type="submit"
+            className={`button popup__saveButton
+            ${isLoading && "popup_saveButton_disabled"}`}
+            disabled={isLoading}
+          >
             {buttonText}
           </button>
         </form>

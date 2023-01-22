@@ -9,12 +9,13 @@ import PopupWithForm from "./PopupWithForm/PopupWithForm";
 
 import defaultAvatar from "../images/Anonymous_emblem.svg";
 import { CardsContext } from "../contexts/CardsContext";
+import EditProfilePopup from "./EditProfilePopup/EditProfilePopup";
 
 function App() {
   //стейты
   const [currentUser, setCurrentUser] = useState({
     name: "Anonimus",
-    description: "Anonimus descriprion",
+    about: "Anonimus descriprion",
     avatar: defaultAvatar,
   });
   const [cards, setCards] = useState([]);
@@ -22,6 +23,7 @@ function App() {
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
 
   //инициализация начальных данных при монтировании
   useEffect(() => {
@@ -42,6 +44,17 @@ function App() {
     setIsEditProfilePopupOpen(true);
     addListeners();
   };
+
+  const handleUpdateUser = (newUserData) => {
+    setIsLoading(true);
+    Api.editUserInfo(newUserData)
+      .then((userData) => {
+        setCurrentUser(userData);
+        closeAllPopups();
+      })
+      .catch((err) => console.log(err))
+      .finally(() => setIsLoading(false));
+  }
 
   /**
    * функция обработчик клика по кнопке добавления карточки
@@ -70,7 +83,7 @@ function App() {
 
   /**
    * функция обработчик лайка карточки
-   * @param {object} card - объект лайкнутой карточки
+   * @param {object} targetCard - объект лайкнутой карточки
    */
   const handleLikeCard = (targetCard) => {
     const isLiked = targetCard.likes.some(
@@ -84,6 +97,10 @@ function App() {
     });
   };
 
+  /**
+   * функция обработчик удаления карточки
+   * @param {object} targetCard - объект лайкнутой карточки
+   */
   const handleDeleteCard = (targetCard) => {
     Api.deleteCard(targetCard._id).then(() => {
       setCards((cards) => cards.filter((card) => card._id !== targetCard._id));
@@ -116,9 +133,11 @@ function App() {
   const handleEscPress = ({ key }) => {
     if (key === "Escape") closeAllPopups();
   };
+
   const addListeners = () => {
     document.addEventListener("keydown", handleEscPress);
   };
+
   const removeListeners = () => {
     document.removeEventListener("keydown", handleEscPress);
   };
@@ -157,35 +176,13 @@ function App() {
             <span className="popup__error avatarInput-error"></span>
           </PopupWithForm>
 
-          <PopupWithForm
-            name="editProfile"
-            title="Редактировать профиль"
-            buttonText="Сохранить"
+          <EditProfilePopup
             onClose={closeAllPopups}
             onOverlayClick={handleOverlayClick}
+            onUpdateUser={handleUpdateUser}
             isOpen={isEditProfilePopupOpen}
-          >
-            <input
-              type="text"
-              className="popup__input"
-              id="usernameInput"
-              name="username"
-              minLength="2"
-              maxLength="40"
-              required
-            />
-            <span className="popup__error usernameInput-error"></span>
-            <input
-              type="text"
-              className="popup__input"
-              id="descriptionInput"
-              name="description"
-              minLength="2"
-              maxLength="200"
-              required
-            />
-            <span className="popup__error descriptionInput-error"></span>
-          </PopupWithForm>
+            isLoading={isLoading}
+          ></EditProfilePopup>
 
           <PopupWithForm
             name="addCard"

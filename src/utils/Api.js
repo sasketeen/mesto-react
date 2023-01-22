@@ -50,14 +50,11 @@ class Api {
    * @param {object} объект с новыми параметрами пользователя, username - имя пользователя description - описание
    * @returns {Promise} промис с обновленным объектом текущего пользователя или ошибкой
    */
-  editUserInfo({ username, description }) {
+  editUserInfo(userData) {
     return fetch(`${this._serverLink}/users/me`, {
       method: "PATCH",
       headers: this._headers,
-      body: JSON.stringify({
-        name: username,
-        about: description,
-      }),
+      body: JSON.stringify(userData),
     }).then((response) => this._gotResponse(response, "editUserInfo"));
   }
 

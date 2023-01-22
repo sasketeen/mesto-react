@@ -52,7 +52,7 @@ import Card from "../Card/Card";
                 aria-label="Редактировать профиль"
                 onClick={onEditProfile}
               ></button>
-              <p className="profile__description">{currentUser.description}</p>
+              <p className="profile__description">{currentUser.about}</p>
             </div>
           </div>
           <button
