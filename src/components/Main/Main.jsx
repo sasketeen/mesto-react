@@ -12,62 +12,69 @@ import Card from "../Card/Card";
  * - onAddPlace - функция обработчик клика по кнопке добавления карточки
  * - onEditAvatar - функция обработчик клика по кнопке редактирования аватара
  * - onClickImage - функция обработчик клика по фото
+ * - onClickLike - функция обработчик клика по лайку
  */
-  export default function Main({ onEditProfile, onAddPlace, onEditAvatar, onClickImage }) {
+  export default function Main({
+    onEditProfile,
+    onAddPlace,
+    onEditAvatar,
+    onClickImage,
+    onClickLike,
+  }) {
+    //стейт
+    const currentUser = useContext(CurrentUserContext);
+    const cards = useContext(CardsContext);
 
-  //стейт
-  const currentUser = useContext(CurrentUserContext);
-  const cards = useContext(CardsContext);
-
-  return (
-    <main className="content">
-      <section className="profile">
-        <div className="profile__card">
-          <div className="profile__avatarContainer">
-            <img
-              src={currentUser.avatar}
-              alt="Аватар пользователя"
-              className="profile__avatar"
-            />
-            <button
-              type="button"
-              className="button profile__avatarButton"
-              aria-label="Редактировать аватар"
-              onClick={onEditAvatar}
-            ></button>
+    return (
+      <main className="content">
+        <section className="profile">
+          <div className="profile__card">
+            <div className="profile__avatarContainer">
+              <img
+                src={currentUser.avatar}
+                alt="Аватар пользователя"
+                className="profile__avatar"
+              />
+              <button
+                type="button"
+                className="button profile__avatarButton"
+                aria-label="Редактировать аватар"
+                onClick={onEditAvatar}
+              ></button>
+            </div>
+            <div className="profile__info">
+              <h1 className="profile__name">{currentUser.name}</h1>
+              <button
+                className="button profile__editButton"
+                type="button"
+                aria-label="Редактировать профиль"
+                onClick={onEditProfile}
+              ></button>
+              <p className="profile__description">{currentUser.description}</p>
+            </div>
           </div>
-          <div className="profile__info">
-            <h1 className="profile__name">{currentUser.name}</h1>
-            <button
-              className="button profile__editButton"
-              type="button"
-              aria-label="Редактировать профиль"
-              onClick={onEditProfile}
-            ></button>
-            <p className="profile__description">{currentUser.description}</p>
-          </div>
-        </div>
-        <button
-          className="button profile__addButton"
-          type="button"
-          aria-label="Добавить фото"
-          onClick={onAddPlace}
-        ></button>
-      </section>
+          <button
+            className="button profile__addButton"
+            type="button"
+            aria-label="Добавить фото"
+            onClick={onAddPlace}
+          ></button>
+        </section>
 
-      <section className="elements">
-        <ul className="elements__list">
-          {cards.map((card) => {
-            return (
-              <Card
-                card={card}
-                key={card._id}
-                onClickImage={onClickImage}
-              ></Card>
-            );
-          })}
-        </ul>
-      </section>
-    </main>
-  );
-}
+        <section className="elements">
+          <ul className="elements__list">
+            {cards.map((card) => {
+              return (
+                <Card
+                  card={card}
+                  key={card._id}
+                  onClickImage={onClickImage}
+                  onClickLike={onClickLike}
+                ></Card>
+              );
+            })}
+          </ul>
+        </section>
+      </main>
+    );
+  }

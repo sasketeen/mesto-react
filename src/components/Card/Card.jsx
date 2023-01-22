@@ -6,15 +6,27 @@ import { CurrentUserContext } from "../../contexts/CurrentUserContext";
  * @param {object} props - пропсы:
  * - card - объект экземпляра карточки
  * - onClickImage - функция обработчик клика по фото
+ * - onClickLike - функция обработчик лайка
  */
-export default function ({ card, onClickImage}) {
+export default function ({ card, onClickImage, onClickLike}) {
   const currentUser = useContext(CurrentUserContext);
   const isOwn = card.owner._id === currentUser._id;
   const isLiked = card.likes.some((user) => user._id === currentUser._id);
 
+  /**
+   * колбек при клике на картинку
+   */
   const handleImageClick = () => {
     onClickImage(card);
   };
+
+  /**
+   * колбек при клике на лайк
+   */
+  const handleLikeClick = () => {
+    onClickLike(card);
+  };
+
   return (
     <li className="card">
       {isOwn && (
@@ -40,6 +52,7 @@ export default function ({ card, onClickImage}) {
             type="button"
             name="like"
             aria-label="Like"
+            onClick={handleLikeClick}
           ></button>
           <span className="card__likeCounter">{card.likes.length}</span>
         </div>

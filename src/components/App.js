@@ -61,10 +61,27 @@ function App() {
 
   /**
    * функция обработчик клика по фото
+   * @param {object} card - объект выбранной карточки
    */
   const handleCardClick = (card) => {
     setSelectedCard(card);
     addListeners();
+  };
+
+  /**
+   * функция обработчик лайка карточки
+   * @param {object} card - объект лайкнутой карточки
+   */
+  const handleCardLike = (targetCard) => {
+    const isLiked = targetCard.likes.some(
+      (user) => user._id === currentUser._id
+    );
+
+    Api.changeLike(targetCard._id, isLiked).then((newCard) => {
+      setCards((cards) =>
+        cards.map((card) => (card._id === targetCard._id ? newCard : card))
+      );
+    });
   };
 
   //обработчики закрытия попапов
@@ -110,6 +127,7 @@ function App() {
             onAddPlace={handleAddPlaceClick}
             onEditAvatar={handleEditAvatarClick}
             onClickImage={handleCardClick}
+            onClickLike={handleCardLike}
           />
           <Footer />
 

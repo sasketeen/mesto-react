@@ -105,27 +105,23 @@ class Api {
   }
 
   /**
-   * Функция добавления лайка на сервере
+   * Функция изменения состояния лайка на сервере
    * @param {string} cardId - уникальный ID карточки
+   * @param {boolean} isLiked - флаг текущего состояния лайка
    * @returns {Promise} промис с объектом обновленной карточки или ошибкой
    */
-  addLike(cardId) {
-    return fetch(`${this._serverLink}/cards/${cardId}/likes`, {
-      method: "PUT",
-      headers: this._headers,
-    }).then((response) => this._gotResponse(response, "addLike"));
-  }
-
-  /**
-   *Функция удаления лайка на сервере
-   * @param {string} cardId - уникальный ID карточки
-   * @returns {Promise} промис с объектом обновленной карточки или ошибкой
-   */
-  removeLike(cardId) {
-    return fetch(`${this._serverLink}/cards/${cardId}/likes`, {
-      method: "DELETE",
-      headers: this._headers,
-    }).then((response) => this._gotResponse(response, "removeLike"));
+  changeLike(cardId, isLiked) {
+    if (isLiked) {
+      return fetch(`${this._serverLink}/cards/${cardId}/likes`, {
+        method: "DELETE",
+        headers: this._headers,
+      }).then((response) => this._gotResponse(response, "removeLike"));
+    } else {
+      return fetch(`${this._serverLink}/cards/${cardId}/likes`, {
+        method: "PUT",
+        headers: this._headers,
+      }).then((response) => this._gotResponse(response, "addLike"));
+    }
   }
 }
 
