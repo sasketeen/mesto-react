@@ -1,7 +1,16 @@
 import { useRef } from "react";
 import PopupWithForm from "../PopupWithForm/PopupWithForm";
 
-export default function({onUpdateAvatar, ...props}) {
+/**
+ * Компонент попапа редактирования аватара
+ * @param {object} props - пропсы:
+ * - onUpdateAvatar - функция обновления аватара
+ * - onClose - функция обработчик клика по крестику
+ * - onOverlayClick - функция обработчик клика по оверлею
+ * - isOpen - флаг открытия попапа
+ * - isLoading - флаг процесса отправки данных
+ */
+export default function EditAvatarPopup({onUpdateAvatar, ...props}) {
   const urlInputRef = useRef();
 
   const handleSubmit = (event) => {

@@ -1,9 +1,10 @@
+
 import { useEffect, useContext, useState } from "react";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import PopupWithForm from "../PopupWithForm/PopupWithForm";
 
 /**
- *
+ * Компонент попапа редактирования профиля
  * @param {object} props - пропсы:
  * - onUpdateUser - функция обновления данных пользователя
  * - onClose - функция обработчик клика по крестику
@@ -11,7 +12,7 @@ import PopupWithForm from "../PopupWithForm/PopupWithForm";
  * - isOpen - флаг открытия попапа
  * - isLoading - флаг процесса отправки данных
  */
-export default function({onUpdateUser, ...props}) {
+export default function EditProfilePopup({onUpdateUser, ...props}) {
   const currentUser = useContext(CurrentUserContext);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");

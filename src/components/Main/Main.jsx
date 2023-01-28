@@ -1,13 +1,11 @@
 import { useContext } from "react";
-import { useEffect, useState } from "react";
-import { CardsContext } from "../../contexts/CardsContext";
 import {CurrentUserContext} from "../../contexts/CurrentUserContext";
-import Api from "../../utils/Api";
 import Card from "../Card/Card";
 
 /**
- *
+ * Компонент основного контента
  * @param {object} props - пропсы:
+ * - cards - карточки
  * - onEditProfile - функция обработчик клика по кнопке редактирования профиля
  * - onAddPlace - функция обработчик клика по кнопке добавления карточки
  * - onEditAvatar - функция обработчик клика по кнопке редактирования аватара
@@ -16,6 +14,7 @@ import Card from "../Card/Card";
  * - onClickDelete - функция обработчик удаления карточки
  */
   export default function Main({
+    cards,
     onEditProfile,
     onAddPlace,
     onEditAvatar,
@@ -25,7 +24,6 @@ import Card from "../Card/Card";
   }) {
     //стейт
     const currentUser = useContext(CurrentUserContext);
-    const cards = useContext(CardsContext);
 
     return (
       <main className="content">

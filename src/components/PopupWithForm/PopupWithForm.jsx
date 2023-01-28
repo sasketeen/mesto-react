@@ -1,5 +1,5 @@
 /**
- *
+ * Компонент попапа с формой
  * @param {object} props - пропсы
  * - name - значение модификатора формы
  * - title - заголовок формы
@@ -35,7 +35,7 @@ export default function PopupWithForm({
           type="button"
           name="close"
           onClick={onClose}
-        ></button>
+        />
         <form
           method="post"
           className="popup__form"

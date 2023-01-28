@@ -2,14 +2,14 @@ import { useContext } from "react";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 
 /**
- *
+ * Компонент карточки
  * @param {object} props - пропсы:
  * - card - объект экземпляра карточки
  * - onClickImage - функция обработчик клика по фото
  * - onClickLike - функция обработчик лайка карточки
  * - onClickDelete - функция обработчик удаления карточки
  */
-export default function ({ card, onClickImage, onClickLike, onClickDelete}) {
+export default function Card({ card, onClickImage, onClickLike, onClickDelete}) {
   const currentUser = useContext(CurrentUserContext);
   const isOwn = card.owner._id === currentUser._id;
   const isLiked = card.likes.some((user) => user._id === currentUser._id);
