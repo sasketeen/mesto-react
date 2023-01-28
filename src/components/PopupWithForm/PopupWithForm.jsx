@@ -4,6 +4,7 @@
  * - name - значение модификатора формы
  * - title - заголовок формы
  * - buttonText - текст кнопки
+ * - validity - флаг валидности формы
  * - isOpen - флаг открытия попапа
  * - isLoading - флаг процесса отправки данных
  * - onClose - функция обработчик клика по крестику
@@ -16,6 +17,7 @@ export default function PopupWithForm({
   name,
   title,
   buttonText,
+  validity,
   isOpen,
   isLoading,
   onClose,
@@ -47,8 +49,8 @@ export default function PopupWithForm({
           <button
             type="submit"
             className={`button popup__saveButton
-            ${isLoading && "popup_saveButton_disabled"}`}
-            disabled={isLoading}
+            ${(isLoading || !validity) && "popup_saveButton_disabled"}`}
+            disabled={isLoading || !validity}
           >
             {buttonText}
           </button>

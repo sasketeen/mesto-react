@@ -1,4 +1,5 @@
 import { useRef } from "react";
+import useValidation from "../../utils/Validation";
 import PopupWithForm from "../PopupWithForm/PopupWithForm";
 
 /**
@@ -10,8 +11,9 @@ import PopupWithForm from "../PopupWithForm/PopupWithForm";
  * - isOpen - флаг открытия попапа
  * - isLoading - флаг процесса отправки данных
  */
-export default function EditAvatarPopup({onUpdateAvatar, ...props}) {
+export default function EditAvatarPopup({ onUpdateAvatar, ...props }) {
   const urlInputRef = useRef();
+  const [onChange, errors, validity] = useValidation();
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -25,24 +27,28 @@ export default function EditAvatarPopup({onUpdateAvatar, ...props}) {
     <PopupWithForm
       name="editAvatar"
       title="Обновить аватар"
-      // buttonText="Сохранить"
-      // onClose={closeAllPopups}
-      // onOverlayClick={handleOverlayClick}
-      // isOpen={isEditAvatarPopupOpen}
       buttonText={buttonText}
+      validity={validity}
       {...props}
       onSubmit={handleSubmit}
     >
       <input
         type="url"
-        className="popup__input"
+        className={`popup__input ${errors.avatar && "popup__input_type_error"}`}
         id="avatarInput"
         name="avatar"
         placeholder="Ссылка на аватар"
         required
         ref={urlInputRef}
+        onChange={onChange}
       />
-      <span className="popup__error avatarInput-error"></span>
+      <span
+        className={`popup__error avatarInput-error ${
+          errors.avatar && "popup__error_active"
+        }`}
+      >
+        {errors.avatar}
+      </span>
     </PopupWithForm>
   );
 }

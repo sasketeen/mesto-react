@@ -1,4 +1,5 @@
 import { useState } from "react";
+import useValidation from "../../utils/Validation";
 import PopupWithForm from "../PopupWithForm/PopupWithForm";
 
 /**
@@ -13,6 +14,7 @@ import PopupWithForm from "../PopupWithForm/PopupWithForm";
 export default function AddPlacePopup({ onAddPlace, ...props }) {
   const [name, setName] = useState("");
   const [link, setLink] = useState("");
+  const [onChange, errors, validity] = useValidation();
   const buttonText = props.isLoading ? "Сохранение" : "Сохранить";
 
   const handleInputName = ({ target }) => {
@@ -32,31 +34,50 @@ export default function AddPlacePopup({ onAddPlace, ...props }) {
       name="addCard"
       title="Новое место"
       buttonText={buttonText}
+      validity={validity}
       {...props}
       onSubmit={handleSubmit}
     >
       <input
         type="text"
-        className="popup__input"
+        className={`popup__input ${errors.name && "popup__input_type_error"}`}
         id="nameInput"
         name="name"
         placeholder="Название"
         minLength="2"
         maxLength="30"
         required
-        onChange={handleInputName}
+        onChange={(event) => {
+          handleInputName(event);
+          onChange(event);
+        }}
       />
-      <span className="popup__error nameInput-error"></span>
+      <span
+        className={`popup__error nameInput-error ${
+          errors.name && "popup__error_active"
+        }`}
+      >
+        {errors.name}
+      </span>
       <input
         type="url"
-        className="popup__input"
+        className={`popup__input ${errors.link && "popup__input_type_error"}`}
         id="linkInput"
         name="link"
         placeholder="Ссылка на картинку"
         required
-        onChange={handleInputLink}
+        onChange={(event) => {
+          handleInputLink(event);
+          onChange(event);
+        }}
       />
-      <span className="popup__error linkInput-error"></span>
+      <span
+        className={`popup__error linkInput-error ${
+          errors.link && "popup__error_active"
+        }`}
+      >
+        {errors.link}
+      </span>
     </PopupWithForm>
   );
 }
