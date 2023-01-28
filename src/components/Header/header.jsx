@@ -1,4 +1,8 @@
 import logo from "../../images/logo.svg";
+
+/**
+ * Компонент хедера
+ */
 export default function Header() {
   return (
     <header className="header">
