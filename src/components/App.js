@@ -54,7 +54,7 @@ function App() {
    */
   const handleEditProfileClick = () => {
     setIsEditProfilePopupOpen(true);
-    addListeners();
+    // addListeners();
   };
 
   /**
@@ -76,7 +76,7 @@ function App() {
    */
   const handleAddPlaceClick = () => {
     setIsAddPlacePopupOpen(true);
-    addListeners();
+    // addListeners();
   };
 
   /**
@@ -99,7 +99,7 @@ function App() {
    */
   const handleEditAvatarClick = () => {
     setIsEditAvatarPopupOpen(true);
-    addListeners();
+    // addListeners();
   };
 
   /**
@@ -122,7 +122,7 @@ function App() {
    */
   const handleClickImage = (card) => {
     setSelectedCard(card);
-    addListeners();
+    // addListeners();
   };
 
   /**
@@ -149,9 +149,8 @@ function App() {
    */
   const handleClickDeleteCard = (targetCard) => {
     setDeletingCard(targetCard);
-    // console.log(deletingCard);
     setIsConfirmPopupOpen(true);
-    addListeners();
+    // addListeners();
   };
 
   /**
@@ -186,7 +185,7 @@ function App() {
     setIsConfirmPopupOpen(false);
     setSelectedCard({});
     setDeletingCard({});
-    removeListeners();
+    // removeListeners();
   };
 
   /**
@@ -199,17 +198,35 @@ function App() {
   /**
    * функция обработчик нажатия на esc
    */
-  const handleEscPress = ({ key }) => {
-    if (key === "Escape") closeAllPopups();
-  };
 
-  const addListeners = () => {
-    document.addEventListener("keydown", handleEscPress);
-  };
+  useEffect(() => {
+    if (
+      isEditProfilePopupOpen ||
+      isAddPlacePopupOpen ||
+      isConfirmPopupOpen ||
+      isEditAvatarPopupOpen ||
+      selectedCard._id
+    ) {
 
-  const removeListeners = () => {
-    document.removeEventListener("keydown", handleEscPress);
-  };
+      const handleEscPress = ({ key }) => {
+        if (key === "Escape") {
+          closeAllPopups();
+        }
+      };
+
+      document.addEventListener("keydown", handleEscPress);
+
+      return () => {
+        document.removeEventListener("keydown", handleEscPress);
+      };
+    }
+  }, [
+    isEditProfilePopupOpen,
+    isAddPlacePopupOpen,
+    isConfirmPopupOpen,
+    isEditAvatarPopupOpen,
+    selectedCard._id,
+  ]);
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
