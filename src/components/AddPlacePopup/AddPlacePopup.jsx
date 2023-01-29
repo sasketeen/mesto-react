@@ -34,7 +34,7 @@ export default function AddPlacePopup({ onAddPlace, ...props }) {
       name="addCard"
       title="Новое место"
       buttonText={buttonText}
-      validity={validity}
+      isDisabled={!validity}
       {...props}
       onSubmit={handleSubmit}
     >

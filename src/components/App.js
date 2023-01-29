@@ -27,6 +27,7 @@ function App() {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [isConfirmPopupOpen, setIsConfirmPopupOpen] = useState(false);
   const [selectedCard, setSelectedCard] = useState({});
+  const [deletingCard, setDeletingCard] = useState({});
   const [isLoading, setIsLoading] = useState(false);
 
   //инициализация начальных данных при монтировании
@@ -139,7 +140,7 @@ function App() {
           cards.map((card) => (card._id === targetCard._id ? newCard : card))
         )
       )
-      .catch((err) => console.log(err))
+      .catch((err) => console.log(err));
   };
 
   /**
@@ -147,7 +148,8 @@ function App() {
    * @param {object} targetCard - объект удаляемой карточки
    */
   const handleClickDeleteCard = (targetCard) => {
-    setSelectedCard(targetCard);
+    setDeletingCard(targetCard);
+    // console.log(deletingCard);
     setIsConfirmPopupOpen(true);
     addListeners();
   };
@@ -156,20 +158,21 @@ function App() {
    * функция обработчик удаления карточки
    * @param {event} event - событие сабмита
    */
-    const handleConfirmDelete = (event) => {
-      event.preventDefault();
-      setIsLoading(true);
-      Api.deleteCard(selectedCard._id)
-        .then(() =>
-          setCards((cards) => {
-            cards.filter((card) => card._id !== selectedCard._id);
-            closeAllPopups();
-          }
-          )
-        )
-        .catch((err) => console.log(err))
-        .finally(() => setIsLoading(false));
-    }
+  const handleConfirmDelete = (event) => {
+    event.preventDefault();
+    setIsLoading(true);
+    Api.deleteCard(deletingCard._id)
+      .then(() => {
+        setCards((cards) =>
+          cards.filter((card) => {
+            return card._id !== deletingCard._id;
+          })
+        );
+        closeAllPopups();
+      })
+      .catch((err) => console.log(err))
+      .finally(() => setIsLoading(false));
+  };
 
   //обработчики закрытия попапов
 
@@ -180,8 +183,9 @@ function App() {
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
-    setIsConfirmPopupOpen(false)
+    setIsConfirmPopupOpen(false);
     setSelectedCard({});
+    setDeletingCard({});
     removeListeners();
   };
 

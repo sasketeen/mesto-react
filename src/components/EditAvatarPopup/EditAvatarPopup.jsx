@@ -28,7 +28,7 @@ export default function EditAvatarPopup({ onUpdateAvatar, ...props }) {
       name="editAvatar"
       title="Обновить аватар"
       buttonText={buttonText}
-      validity={validity}
+      isDisabled={!validity}
       {...props}
       onSubmit={handleSubmit}
     >

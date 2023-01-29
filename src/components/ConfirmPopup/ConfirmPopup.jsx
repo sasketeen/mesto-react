@@ -15,8 +15,9 @@ export default function ConfirmPopup(props) {
   return (
     <PopupWithForm
       name="Confirm"
-      title="Редактировать профиль"
+      title="Вы уверены?"
       buttonText={buttonText}
+      isDisabled={false}
       {...props}
     />
   );
