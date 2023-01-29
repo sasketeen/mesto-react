@@ -23,12 +23,15 @@ function App() {
 
   const [cards, setCards] = useState([]);
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
+  const [isEditProfileLoading, setIsEditProfileLoading] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
+  const [isAddPlaceLoading, setIsAddPlaceLoading] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
+  const [isEditAvatarLoading, setIsEditAvatarLoading] = useState(false);
   const [isConfirmPopupOpen, setIsConfirmPopupOpen] = useState(false);
+  const [isConfirmLoading, setIsConfirmLoading] = useState(false);
   const [selectedCard, setSelectedCard] = useState({});
   const [deletingCard, setDeletingCard] = useState({});
-  const [isLoading, setIsLoading] = useState(false);
 
   //инициализация начальных данных при монтировании
   useEffect(() => {
@@ -61,13 +64,14 @@ function App() {
    * @param {object} newUserData - объект с новым именем и описание пользователя
    */
   const handleUpdateUser = (newUserData) => {
-    setIsLoading(true);
-    api.editUserInfo(newUserData)
+    setIsEditProfileLoading(true);
+    api
+      .editUserInfo(newUserData)
       .then((userData) => {
         updateUserInfo(userData);
       })
       .catch((err) => console.log(err))
-      .finally(() => setIsLoading(false));
+      .finally(() => setIsEditProfileLoading(false));
   };
 
   /**
@@ -82,14 +86,15 @@ function App() {
    * @param {object} cardData - объект с новым данными карточки
    */
   const handleAddPlace = (cardData) => {
-    setIsLoading(true);
-    api.addCard(cardData)
+    setIsAddPlaceLoading(true);
+    api
+      .addCard(cardData)
       .then((newCard) => {
         closeAllPopups();
         setCards([newCard, ...cards]);
       })
       .catch((err) => console.log(err))
-      .finally(() => setIsLoading(false));
+      .finally(() => setIsAddPlaceLoading(false));
   };
 
   /**
@@ -104,13 +109,14 @@ function App() {
    * @param {object} newAvatarData - объект с новой ссылкой на аватар
    */
   const handleUpdateAvatar = (newAvatarData) => {
-    setIsLoading(true);
-    api.editAvatar(newAvatarData)
+    setIsEditAvatarLoading(true);
+    api
+      .editAvatar(newAvatarData)
       .then((userData) => {
         updateUserInfo(userData);
       })
       .catch((err) => console.log(err))
-      .finally(() => setIsLoading(false));
+      .finally(() => setIsEditAvatarLoading(false));
   };
 
   /**
@@ -130,7 +136,8 @@ function App() {
       (user) => user._id === currentUser._id
     );
 
-    api.changeLike(targetCard._id, isLiked)
+    api
+      .changeLike(targetCard._id, isLiked)
       .then((newCard) =>
         setCards((cards) =>
           cards.map((card) => (card._id === targetCard._id ? newCard : card))
@@ -154,8 +161,9 @@ function App() {
    */
   const handleConfirmDelete = (event) => {
     event.preventDefault();
-    setIsLoading(true);
-    api.deleteCard(deletingCard._id)
+    setIsConfirmLoading(true);
+    api
+      .deleteCard(deletingCard._id)
       .then(() => {
         setCards((cards) =>
           cards.filter((card) => {
@@ -165,7 +173,7 @@ function App() {
         closeAllPopups();
       })
       .catch((err) => console.log(err))
-      .finally(() => setIsLoading(false));
+      .finally(() => setIsConfirmLoading(false));
   };
 
   //обработчики закрытия попапов
@@ -193,7 +201,8 @@ function App() {
    * функция обработчик нажатия на esc
    */
 
-  useEffect(() => { //не совсем понял про сброс в useEffect из доки, буду признателен за доп ссылки или объяснение)
+  useEffect(() => {
+    //не совсем понял про сброс в useEffect из доки, буду признателен за доп ссылки или объяснение)
     if (
       isEditProfilePopupOpen ||
       isAddPlacePopupOpen ||
@@ -201,7 +210,6 @@ function App() {
       isEditAvatarPopupOpen ||
       selectedCard._id
     ) {
-
       const handleEscPress = ({ key }) => {
         if (key === "Escape") {
           closeAllPopups();
@@ -242,7 +250,7 @@ function App() {
           onOverlayClick={handleOverlayClick}
           onUpdateAvatar={handleUpdateAvatar}
           isOpen={isEditAvatarPopupOpen}
-          isLoading={isLoading}
+          isLoading={isEditAvatarLoading}
         />
 
         <EditProfilePopup
@@ -250,7 +258,7 @@ function App() {
           onOverlayClick={handleOverlayClick}
           onUpdateUser={handleUpdateUser}
           isOpen={isEditProfilePopupOpen}
-          isLoading={isLoading}
+          isLoading={isEditProfileLoading}
         />
 
         <AddPlacePopup
@@ -258,7 +266,7 @@ function App() {
           onOverlayClick={handleOverlayClick}
           onAddPlace={handleAddPlace}
           isOpen={isAddPlacePopupOpen}
-          isLoading={isLoading}
+          isLoading={isAddPlaceLoading}
         />
 
         <ImagePopup
@@ -272,7 +280,7 @@ function App() {
           onOverlayClick={handleOverlayClick}
           onSubmit={handleConfirmDelete}
           isOpen={isConfirmPopupOpen}
-          isLoading={isLoading}
+          isLoading={isConfirmLoading}
         />
       </div>
     </CurrentUserContext.Provider>
