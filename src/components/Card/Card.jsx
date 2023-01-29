@@ -36,7 +36,7 @@ export default function Card({ card, onClickImage, onClickLike, onClickDelete}) 
   };
 
   return (
-    <li className="card">
+    <div className="card">
       {isOwn && (
         <button
           className="button card__buttonDelete"
@@ -66,6 +66,6 @@ export default function Card({ card, onClickImage, onClickLike, onClickDelete}) 
           <span className="card__likeCounter">{card.likes.length}</span>
         </div>
       </div>
-    </li>
+    </div>
   );
 }
