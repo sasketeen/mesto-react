@@ -9,7 +9,12 @@ import { CurrentUserContext } from "../../contexts/CurrentUserContext";
  * - onClickLike - функция обработчик лайка карточки
  * - onClickDelete - функция обработчик удаления карточки
  */
-export default function Card({ card, onClickImage, onClickLike, onClickDelete}) {
+export default function Card({
+  card,
+  onClickImage,
+  onClickLike,
+  onClickDelete,
+}) {
   const currentUser = useContext(CurrentUserContext);
   const isOwn = card.owner._id === currentUser._id;
   const isLiked = card.likes.some((user) => user._id === currentUser._id);

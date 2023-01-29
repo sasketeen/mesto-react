@@ -202,7 +202,6 @@ function App() {
    */
 
   useEffect(() => {
-    //не совсем понял про сброс в useEffect из доки, буду признателен за доп ссылки или объяснение)
     if (
       isEditProfilePopupOpen ||
       isAddPlacePopupOpen ||
