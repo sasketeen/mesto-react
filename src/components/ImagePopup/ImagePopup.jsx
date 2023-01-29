@@ -8,7 +8,7 @@
 export default function ImagePopup({ card, onClose, onOverlayClick }) {
   return (
     <div
-      className={`popup popup_type_image ${card.name && "popup_opened"}`}
+      className={`popup popup_type_image ${card.name ? "popup_opened" : ""}`}
       onClick={onOverlayClick}
     >
       <div className="popup__image-container">

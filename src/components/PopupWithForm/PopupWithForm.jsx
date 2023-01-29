@@ -17,7 +17,7 @@ export default function PopupWithForm({
   name,
   title,
   buttonText,
-  validity,
+  isDisabled,
   isOpen,
   isLoading,
   onClose,
@@ -27,7 +27,7 @@ export default function PopupWithForm({
 }) {
   return (
     <div
-      className={`popup popup_type_${name} ${isOpen && "popup_opened"}`}
+      className={`popup popup_type_${name} ${isOpen ? "popup_opened" : ""}`}
       onMouseDown={onOverlayClick}
     >
       <div className="popup__container">
@@ -49,8 +49,8 @@ export default function PopupWithForm({
           <button
             type="submit"
             className={`button popup__saveButton
-            ${(isLoading || !validity) && "popup_saveButton_disabled"}`}
-            disabled={isLoading || !validity}
+            ${(isLoading || isDisabled) && "popup_saveButton_disabled"}`}
+            disabled={isLoading || isDisabled}
           >
             {buttonText}
           </button>

@@ -1,6 +1,6 @@
 import { useEffect, useContext, useState } from "react";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
-import useValidation from "../../utils/Validation";
+import useValidation from "../../hooks/useValidation";
 import PopupWithForm from "../PopupWithForm/PopupWithForm";
 
 /**
@@ -46,13 +46,15 @@ export default function EditProfilePopup({ onUpdateUser, ...props }) {
       name="editProfile"
       title="Редактировать профиль"
       buttonText={buttonText}
-      validity={validity}
+      isDisabled={!validity}
       {...props}
       onSubmit={handleSubmit}
     >
       <input
         type="text"
-        className={`popup__input ${errors.username && "popup__input_type_error"}`}
+        className={`popup__input ${
+          errors.username && "popup__input_type_error"
+        }`}
         id="usernameInput"
         name="username"
         minLength="2"

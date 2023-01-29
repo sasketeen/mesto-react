@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
-import Api from "../utils/Api";
-import Header from "./Header/header";
+import api from "../utils/Api";
+import Header from "./Header/Header";
 import Main from "./Main/Main";
 import Footer from "./Footer/Footer";
 import ImagePopup from "./ImagePopup/ImagePopup";
@@ -23,15 +23,19 @@ function App() {
 
   const [cards, setCards] = useState([]);
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
+  const [isEditProfileLoading, setIsEditProfileLoading] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
+  const [isAddPlaceLoading, setIsAddPlaceLoading] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
+  const [isEditAvatarLoading, setIsEditAvatarLoading] = useState(false);
   const [isConfirmPopupOpen, setIsConfirmPopupOpen] = useState(false);
+  const [isConfirmLoading, setIsConfirmLoading] = useState(false);
   const [selectedCard, setSelectedCard] = useState({});
-  const [isLoading, setIsLoading] = useState(false);
+  const [deletingCard, setDeletingCard] = useState({});
 
   //инициализация начальных данных при монтировании
   useEffect(() => {
-    Promise.all([Api.getUserInfo(), Api.getCards()])
+    Promise.all([api.getUserInfo(), api.getCards()])
       .then(([userData, cardsData]) => {
         setCurrentUser(userData);
         setCards(cardsData);
@@ -53,7 +57,6 @@ function App() {
    */
   const handleEditProfileClick = () => {
     setIsEditProfilePopupOpen(true);
-    addListeners();
   };
 
   /**
@@ -61,13 +64,14 @@ function App() {
    * @param {object} newUserData - объект с новым именем и описание пользователя
    */
   const handleUpdateUser = (newUserData) => {
-    setIsLoading(true);
-    Api.editUserInfo(newUserData)
+    setIsEditProfileLoading(true);
+    api
+      .editUserInfo(newUserData)
       .then((userData) => {
         updateUserInfo(userData);
       })
       .catch((err) => console.log(err))
-      .finally(() => setIsLoading(false));
+      .finally(() => setIsEditProfileLoading(false));
   };
 
   /**
@@ -75,7 +79,6 @@ function App() {
    */
   const handleAddPlaceClick = () => {
     setIsAddPlacePopupOpen(true);
-    addListeners();
   };
 
   /**
@@ -83,14 +86,15 @@ function App() {
    * @param {object} cardData - объект с новым данными карточки
    */
   const handleAddPlace = (cardData) => {
-    setIsLoading(true);
-    Api.addCard(cardData)
+    setIsAddPlaceLoading(true);
+    api
+      .addCard(cardData)
       .then((newCard) => {
         closeAllPopups();
         setCards([newCard, ...cards]);
       })
       .catch((err) => console.log(err))
-      .finally(() => setIsLoading(false));
+      .finally(() => setIsAddPlaceLoading(false));
   };
 
   /**
@@ -98,7 +102,6 @@ function App() {
    */
   const handleEditAvatarClick = () => {
     setIsEditAvatarPopupOpen(true);
-    addListeners();
   };
 
   /**
@@ -106,13 +109,14 @@ function App() {
    * @param {object} newAvatarData - объект с новой ссылкой на аватар
    */
   const handleUpdateAvatar = (newAvatarData) => {
-    setIsLoading(true);
-    Api.editAvatar(newAvatarData)
+    setIsEditAvatarLoading(true);
+    api
+      .editAvatar(newAvatarData)
       .then((userData) => {
         updateUserInfo(userData);
       })
       .catch((err) => console.log(err))
-      .finally(() => setIsLoading(false));
+      .finally(() => setIsEditAvatarLoading(false));
   };
 
   /**
@@ -121,7 +125,6 @@ function App() {
    */
   const handleClickImage = (card) => {
     setSelectedCard(card);
-    addListeners();
   };
 
   /**
@@ -133,13 +136,14 @@ function App() {
       (user) => user._id === currentUser._id
     );
 
-    Api.changeLike(targetCard._id, isLiked)
+    api
+      .changeLike(targetCard._id, isLiked)
       .then((newCard) =>
         setCards((cards) =>
           cards.map((card) => (card._id === targetCard._id ? newCard : card))
         )
       )
-      .catch((err) => console.log(err))
+      .catch((err) => console.log(err));
   };
 
   /**
@@ -147,29 +151,30 @@ function App() {
    * @param {object} targetCard - объект удаляемой карточки
    */
   const handleClickDeleteCard = (targetCard) => {
-    setSelectedCard(targetCard);
+    setDeletingCard(targetCard);
     setIsConfirmPopupOpen(true);
-    addListeners();
   };
 
   /**
    * функция обработчик удаления карточки
    * @param {event} event - событие сабмита
    */
-    const handleConfirmDelete = (event) => {
-      event.preventDefault();
-      setIsLoading(true);
-      Api.deleteCard(selectedCard._id)
-        .then(() =>
-          setCards((cards) => {
-            cards.filter((card) => card._id !== selectedCard._id);
-            closeAllPopups();
-          }
-          )
-        )
-        .catch((err) => console.log(err))
-        .finally(() => setIsLoading(false));
-    }
+  const handleConfirmDelete = (event) => {
+    event.preventDefault();
+    setIsConfirmLoading(true);
+    api
+      .deleteCard(deletingCard._id)
+      .then(() => {
+        setCards((cards) =>
+          cards.filter((card) => {
+            return card._id !== deletingCard._id;
+          })
+        );
+        closeAllPopups();
+      })
+      .catch((err) => console.log(err))
+      .finally(() => setIsConfirmLoading(false));
+  };
 
   //обработчики закрытия попапов
 
@@ -180,9 +185,9 @@ function App() {
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
     setIsEditAvatarPopupOpen(false);
-    setIsConfirmPopupOpen(false)
+    setIsConfirmPopupOpen(false);
     setSelectedCard({});
-    removeListeners();
+    setDeletingCard({});
   };
 
   /**
@@ -195,17 +200,35 @@ function App() {
   /**
    * функция обработчик нажатия на esc
    */
-  const handleEscPress = ({ key }) => {
-    if (key === "Escape") closeAllPopups();
-  };
 
-  const addListeners = () => {
-    document.addEventListener("keydown", handleEscPress);
-  };
+  useEffect(() => {
+    //не совсем понял про сброс в useEffect из доки, буду признателен за доп ссылки или объяснение)
+    if (
+      isEditProfilePopupOpen ||
+      isAddPlacePopupOpen ||
+      isConfirmPopupOpen ||
+      isEditAvatarPopupOpen ||
+      selectedCard._id
+    ) {
+      const handleEscPress = ({ key }) => {
+        if (key === "Escape") {
+          closeAllPopups();
+        }
+      };
 
-  const removeListeners = () => {
-    document.removeEventListener("keydown", handleEscPress);
-  };
+      document.addEventListener("keydown", handleEscPress);
+
+      return () => {
+        document.removeEventListener("keydown", handleEscPress);
+      };
+    }
+  }, [
+    isEditProfilePopupOpen,
+    isAddPlacePopupOpen,
+    isConfirmPopupOpen,
+    isEditAvatarPopupOpen,
+    selectedCard._id,
+  ]);
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -227,7 +250,7 @@ function App() {
           onOverlayClick={handleOverlayClick}
           onUpdateAvatar={handleUpdateAvatar}
           isOpen={isEditAvatarPopupOpen}
-          isLoading={isLoading}
+          isLoading={isEditAvatarLoading}
         />
 
         <EditProfilePopup
@@ -235,7 +258,7 @@ function App() {
           onOverlayClick={handleOverlayClick}
           onUpdateUser={handleUpdateUser}
           isOpen={isEditProfilePopupOpen}
-          isLoading={isLoading}
+          isLoading={isEditProfileLoading}
         />
 
         <AddPlacePopup
@@ -243,7 +266,7 @@ function App() {
           onOverlayClick={handleOverlayClick}
           onAddPlace={handleAddPlace}
           isOpen={isAddPlacePopupOpen}
-          isLoading={isLoading}
+          isLoading={isAddPlaceLoading}
         />
 
         <ImagePopup
@@ -257,7 +280,7 @@ function App() {
           onOverlayClick={handleOverlayClick}
           onSubmit={handleConfirmDelete}
           isOpen={isConfirmPopupOpen}
-          isLoading={isLoading}
+          isLoading={isConfirmLoading}
         />
       </div>
     </CurrentUserContext.Provider>

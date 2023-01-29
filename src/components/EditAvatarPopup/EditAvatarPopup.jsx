@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import useValidation from "../../utils/Validation";
+import useValidation from "../../hooks/useValidation";
 import PopupWithForm from "../PopupWithForm/PopupWithForm";
 
 /**
@@ -28,7 +28,7 @@ export default function EditAvatarPopup({ onUpdateAvatar, ...props }) {
       name="editAvatar"
       title="Обновить аватар"
       buttonText={buttonText}
-      validity={validity}
+      isDisabled={!validity}
       {...props}
       onSubmit={handleSubmit}
     >

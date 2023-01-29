@@ -1,5 +1,5 @@
 import { useState } from "react";
-import useValidation from "../../utils/Validation";
+import useValidation from "../../hooks/useValidation";
 import PopupWithForm from "../PopupWithForm/PopupWithForm";
 
 /**
@@ -34,7 +34,7 @@ export default function AddPlacePopup({ onAddPlace, ...props }) {
       name="addCard"
       title="Новое место"
       buttonText={buttonText}
-      validity={validity}
+      isDisabled={!validity}
       {...props}
       onSubmit={handleSubmit}
     >
@@ -47,6 +47,7 @@ export default function AddPlacePopup({ onAddPlace, ...props }) {
         minLength="2"
         maxLength="30"
         required
+        value={name}
         onChange={(event) => {
           handleInputName(event);
           onChange(event);
@@ -66,6 +67,7 @@ export default function AddPlacePopup({ onAddPlace, ...props }) {
         name="link"
         placeholder="Ссылка на картинку"
         required
+        value={link}
         onChange={(event) => {
           handleInputLink(event);
           onChange(event);
