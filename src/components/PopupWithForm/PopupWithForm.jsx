@@ -27,7 +27,7 @@ export default function PopupWithForm({
 }) {
   return (
     <div
-      className={`popup popup_type_${name} ${isOpen && "popup_opened"}`}
+      className={`popup popup_type_${name} ${isOpen ? "popup_opened" : ""}`}
       onMouseDown={onOverlayClick}
     >
       <div className="popup__container">

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 
-import Api from "../utils/Api";
+import api from "../utils/Api";
 import Header from "./Header/Header";
 import Main from "./Main/Main";
 import Footer from "./Footer/Footer";
@@ -32,7 +32,7 @@ function App() {
 
   //инициализация начальных данных при монтировании
   useEffect(() => {
-    Promise.all([Api.getUserInfo(), Api.getCards()])
+    Promise.all([api.getUserInfo(), api.getCards()])
       .then(([userData, cardsData]) => {
         setCurrentUser(userData);
         setCards(cardsData);
@@ -54,7 +54,6 @@ function App() {
    */
   const handleEditProfileClick = () => {
     setIsEditProfilePopupOpen(true);
-    // addListeners();
   };
 
   /**
@@ -63,7 +62,7 @@ function App() {
    */
   const handleUpdateUser = (newUserData) => {
     setIsLoading(true);
-    Api.editUserInfo(newUserData)
+    api.editUserInfo(newUserData)
       .then((userData) => {
         updateUserInfo(userData);
       })
@@ -76,7 +75,6 @@ function App() {
    */
   const handleAddPlaceClick = () => {
     setIsAddPlacePopupOpen(true);
-    // addListeners();
   };
 
   /**
@@ -85,7 +83,7 @@ function App() {
    */
   const handleAddPlace = (cardData) => {
     setIsLoading(true);
-    Api.addCard(cardData)
+    api.addCard(cardData)
       .then((newCard) => {
         closeAllPopups();
         setCards([newCard, ...cards]);
@@ -99,7 +97,6 @@ function App() {
    */
   const handleEditAvatarClick = () => {
     setIsEditAvatarPopupOpen(true);
-    // addListeners();
   };
 
   /**
@@ -108,7 +105,7 @@ function App() {
    */
   const handleUpdateAvatar = (newAvatarData) => {
     setIsLoading(true);
-    Api.editAvatar(newAvatarData)
+    api.editAvatar(newAvatarData)
       .then((userData) => {
         updateUserInfo(userData);
       })
@@ -122,7 +119,6 @@ function App() {
    */
   const handleClickImage = (card) => {
     setSelectedCard(card);
-    // addListeners();
   };
 
   /**
@@ -134,7 +130,7 @@ function App() {
       (user) => user._id === currentUser._id
     );
 
-    Api.changeLike(targetCard._id, isLiked)
+    api.changeLike(targetCard._id, isLiked)
       .then((newCard) =>
         setCards((cards) =>
           cards.map((card) => (card._id === targetCard._id ? newCard : card))
@@ -150,7 +146,6 @@ function App() {
   const handleClickDeleteCard = (targetCard) => {
     setDeletingCard(targetCard);
     setIsConfirmPopupOpen(true);
-    // addListeners();
   };
 
   /**
@@ -160,7 +155,7 @@ function App() {
   const handleConfirmDelete = (event) => {
     event.preventDefault();
     setIsLoading(true);
-    Api.deleteCard(deletingCard._id)
+    api.deleteCard(deletingCard._id)
       .then(() => {
         setCards((cards) =>
           cards.filter((card) => {
@@ -185,7 +180,6 @@ function App() {
     setIsConfirmPopupOpen(false);
     setSelectedCard({});
     setDeletingCard({});
-    // removeListeners();
   };
 
   /**
@@ -199,7 +193,7 @@ function App() {
    * функция обработчик нажатия на esc
    */
 
-  useEffect(() => {
+  useEffect(() => { //не совсем понял про сброс в useEffect из доки, буду признателен за доп ссылки или объяснение)
     if (
       isEditProfilePopupOpen ||
       isAddPlacePopupOpen ||

@@ -1,6 +1,6 @@
 import { useEffect, useContext, useState } from "react";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
-import useValidation from "../../utils/Validation";
+import useValidation from "../../hooks/useValidation";
 import PopupWithForm from "../PopupWithForm/PopupWithForm";
 
 /**
